@@ -1,0 +1,74 @@
+<div id="right" th:fragment="righter">
+	<div class="col-md-3">
+	  		<div class="data_list">
+				<div class="data_list_title">
+					<img th:src="@{/images/user_icon.png}"/>
+					博主信息
+				</div>
+				<div class="user_image">
+					<img th:src="@{/images/bqb.jpg}"/>
+				</div>
+				<div class="nickName" th:text="${blogger?.userName}"></div>
+				<div class="userSign" th:text="${blogger?.motto}"></div>
+			</div>
+	  	
+	  		<div class="data_list">
+				<div class="data_list_title">
+					<img th:src="@{/images/byType_icon.png}"/>
+					按日志类别
+				</div>
+				<div class="datas">
+					<ul>
+						<li th:each="type,typeStat:${typeBlogs}">
+						    <span><a href="javascript:;" onclick="typeSearch(this)" th:attr="tid=${type.blog_type}" th:text="${type.name}">类别</a>&nbsp; (<span th:text="${type.typeCount}"></span>)</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+	  		
+			<div class="data_list">
+				<div class="data_list_title">
+					<img th:src="@{/images/byDate_icon.png}"/>
+					按日志日期
+				</div>
+				<div class="datas">
+					<ul>
+						<li th:each="date:${blogDate}">
+						  <span><a href="javascript:;" onclick="dateSearch(this)" th:attr="month=${date.months}" th:text="${date.months}">日期</a>&nbsp;(<span th:text="${date.blogCount}"></span>)</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="data_list">
+				<div class="data_list_title">
+					<img th:src="@{/images/link_icon.png}"/>
+					友情链接
+				</div>
+				<div class="datas">
+					<ul>
+						<li th:each="link:${links}">
+						  <span>
+						    <a th:href="${link.url}" target="_blank" th:text="${link.name}">友情链接</a>
+						  </span>
+						</li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="data_list">
+				<div class="data_list_title">
+					<img th:src="@{/images/link_logo.png}" style="width：16px;height:15PX;"/>
+					 以下情况可以联系博主<a href="http://wpa.qq.com/msgrd?v=3&amp;uin=457122396&amp;site=qq&amp;menu=yes" target="_blank"><img src="./images/02_22.png"/></a>
+				</div>
+				<div class="datas">
+					<ul>
+							<li><span>1.提供bug、建议的。</span></li>
+							<li><span>2.单身的漂亮妹子想找靠谱对象的。</span></li>
+							<li><span>3.要友情链接的。</span></li>
+							<li><span>4.要给我发红包的</span></li>
+					</ul>
+				</div>
+			</div>
+		  </div>
+</div>

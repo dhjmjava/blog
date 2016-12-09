@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+ <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE7;IE9"/>
+    <title>评论审核</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/supervisor/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/supervisor/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/jquery-2.1.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/datimeday/WdatePicker.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/blog.js}"></script>
+</head>
+<body>
+  <!-- 头部 -->
+   <div id="header" th:include="supervisor/common/header :: supervisor"></div>
+   
+    <div class="clearfix"></div>
+     <div class="content">
+         <div class="container-fluid">
+               <div class="row-fluid">
+                 <div class="span2 span_left">
+                       <div class="text-center" style="margin-top: 20px;">
+                           <ul class="nav nav-pills nav-stacked">
+                               <li class="active">
+                                   <a href="#commentManage" class="btn btn-primary active" data-toggle="tab">评论管理</a>
+                               </li>
+                               <li >
+                                   <a href="#commentCheck" class="btn btn-primary active" data-toggle="tab">评论审核</a>
+                               </li>
+                           </ul>
+                       </div>
+                 </div>
+         <div class="clearfix"></div>
+    <div class="span10 pull_width">
+         <div class="tab-content">
+             <!--评论审核-->
+             <div class="tab-pane active" id="commentManage">
+                 <table class="table table-hover table_text">
+                    <div class="pull-right" style="padding: 10px 20px;"></div>
+                    <tr>
+                         <td>序列号</td>
+                         <td>评论内容</td>
+                         <td>发布时间</td>
+                         <td>用户ip</td>
+                         <td>操作</td>
+                     </tr>
+                     <tr>
+                         <td>1</td>
+                         <td> </td>
+                         <td></td>
+                         <td>dh</td>
+                         <td>
+                           <a href="javascript:;" onclick="delComment(this);">删除</a>
+                           <a href="javascript:;" onclick="checkPass(this);">通过审核</a>
+                         </td>
+                     </tr>
+                  </table>
+
+                 <!---分页 begin-->
+                 <div class="pagination pull-right input_padding">
+                     <ul>
+                         <li><a href="#">首页</a></li>
+                         <li><a href="#">上一页</a></li>
+                         <li><a href="#">1</a></li>
+                         <li><a href="#">2</a></li>
+                         <li><a href="#">下一页</a></li>
+                         <li><a href="#">尾页</a></li>
+                     </ul>
+                 </div>
+                 <!---分页 end-->
+             </div>
+             
+                 </div>
+               </div>
+            </div>
+         </div>
+     </div>
+    <div class="footer login">
+        <div class="logon_footer">java</div>
+    </div>
+</body>
+</html>

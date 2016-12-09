@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE7;IE9"/>
+    <title></title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/supervisor/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/supervisor/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/jquery-2.1.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/datimeday/WdatePicker.js}"></script>
+</head>
+<body>
+
+    <div id="header" th:include="supervisor/common/header :: supervisor"></div>
+    
+    <div class="clearfix"></div>
+     <div class="content">
+         <div class="container-fluid">
+               <div class="row-fluid">
+                 <div class="span2 span_left">
+                       <div class="text-center" style="margin-top: 20px;">
+                           <ul class="nav nav-pills nav-stacked">
+                               <li >
+                                   <a th:href="@{/supervisor/addBlog}" class="btn btn-primary active" >添加博客</a>
+                               </li>
+                               <li class="active">
+                                   <a href="#blogMgt" class="btn btn-primary active">博客管理</a>
+                               </li>
+                               <li>
+                                   <a th:href="@{/supervisor/typeMgt}" class="btn btn-primary active">类别管理</a>
+                               </li>
+                           </ul>
+                       </div>
+                 </div>
+         <div class="clearfix"></div>
+    <div class="span10 pull_width">
+         <div class="tab-content">
+             <!--博客管理-->
+             <div class="tab-pane active" id="blogMgt">
+                 <table class="table table-hover table_text">
+                    <div class="pull-right" style="padding: 10px 20px;"></div>
+                    <tr>
+                         <td>序列号</td>
+                         <td>博客名称</td>
+                         <td>发布日期</td>
+                         <td>作者</td>
+                         <td>操作</td>
+                     </tr>
+                     <tr th:each="blog,blogStat:${page.page}">
+                         <td th:text="${blogStat.index+1}">1</td>
+                         <td th:text="${blog.title}"> </td>
+                         <td th:text="${#calendars.format(blog.publish_time,'yyyy年MM月dd日')}"></td>
+                         <td th:text="${blog.author}">dh</td>
+                         <td>
+                         <a href="javascript:;" onclick="delBlog(this);" class="delBlosg" th:id="${blog.id}">删除</a>
+                         <a th:href="@{/supervisor/update-blog(blogId=${blog.id})}">修改</a>
+                         </td>
+                     </tr>
+                   </table>
+
+	                 <!---分页 begin-->
+	                 <div class="pagination pull-right input_padding">
+	                     <ul class="pagination pagination-sm">
+						    <li><a href="/blog/supervisor/index.html">首页</a></li>
+						    <li id="pageUp"><a href="javascript:;"  onclick="pageUp();">上一页</a></li>
+						    <li th:each="num,numStat:${page?.pageNumber}"><a href="javascript:;" class="jump" th:id="num+${num}" th:text="${num}">1</a></li>
+						    <li id="pageDown"><a href="javascript:;" id="pageDown" onclick="pageDown();">下一页</a></li>
+						</ul>
+	                 </div>
+                   <!---分页 end-->
+                   
+                  </div>
+                 </div>
+               </div>
+            </div>
+         </div>
+     </div>
+     
+    <form action="/blog/supervisor/index.html" accept-charset="UTF-8" method="GET"  id="homeForm">
+		<input type="hidden" name="currPage" id="currPage" th:value="${page.currPage}" />
+		<input type="hidden" name="pageSize" id="pageSize" th:value="${page.pageSize}" />
+    </form>
+    
+    <div class="footer login">
+        <div class="logon_footer">java</div>
+    </div>
+   <script type="text/javascript" th:inline="javascript">
+	    var currPage=[[${page.currPage}]];
+		var totalCount=[[${page.totalCount}]];
+		var pageNumber = [[${page.pageNumber.size()}]];
+	</script> 
+	<script th:src="@{/javascript/supervisor/blog.js}"></script>
+</body>
+</html>

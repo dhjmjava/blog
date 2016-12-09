@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE7;IE9"/>
+    <title></title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/supervisor/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/supervisor/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/jquery-2.1.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/datimeday/WdatePicker.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/link.js}"></script>
+</head>
+<body>
+    
+    <div id="header" th:include="supervisor/common/header :: supervisor"></div>
+    
+    <div class="clearfix"></div>
+     <div class="content">
+         <div class="container-fluid">
+               <div class="row-fluid">
+                 <div class="span2 span_left">
+                       <div class="text-center" style="margin-top: 20px;">
+                           <ul class="nav nav-pills nav-stacked">
+                               <li class="active">
+                                   <a th:href="@{/supervisor/linkMgt.html}" class="btn btn-primary active">链接管理</a>
+                               </li>
+                               <li >
+                                   <a th:href="@{/supervisor/addLink}" class="btn btn-primary active">添加链接</a>
+                               </li>
+                           </ul>
+                       </div>
+                 </div>
+         <div class="clearfix"></div>
+    <div class="span10 pull_width">
+         <div class="tab-content">
+             
+	           <!---添加链接模态框 begin-->
+                       <div class="text-center">
+                           <h3>修改链接</h3>
+                       </div>
+                       <div class="media-body">
+                           <form class="form-horizontal" action="/blog/supervisor/saveUpdate" method="post" id="updateLinkForm">
+                               <input type="hidden" name="lid" id="lid" th:value="${link.id}"/>
+                               <div class="control-group" style="margin-left: 30%">
+                                   <label class="control-label" for="name">链接名称：</label>
+                                       <div class="controls">
+                                            <input type="text" name="name" id="name" th:value="${link.name}"/>
+                                       </div>
+                               </div>
+                               <div class="control-group" style="margin-left: 30%">
+                                   <label class="control-label" for="url">链接地址：</label>
+                                       <div class="controls">
+                                          <input type="text" id="url" name="url" th:value="${link.url}"/>
+                                       </div>
+                               </div>
+                               <div class="control-group" style="margin-left: 30%">
+                                   <label class="control-label" for="is_use">是否启用：</label>
+                                       <div class="controls">
+                                           <select id="is_use" name="is_use" >
+						                        <option th:if="${link.is_use eq 1}" selected="selected" value="1">启用</option>
+						                        <option th:if="${link.is_use eq 0}" selected="selected" value="0">隐藏</option>
+						                   </select>
+                                       </div>
+                               </div>
+                               
+                               <div class="control-group text-center">
+                                    <a href="javascript:;" onclick="updateLink();" role="button" class="btn btn-info">确认修改</a>
+                                     <a href="javascript:;" role="button" class="btn btn-info">我再想想</a>
+                               </div>
+                           </form>
+                       </div>
+                   </div>
+               </div>
+            </div>
+         </div>
+     </div>
+    <div class="footer login">
+        <div class="logon_footer">java</div>
+    </div>
+</body>
+</html>

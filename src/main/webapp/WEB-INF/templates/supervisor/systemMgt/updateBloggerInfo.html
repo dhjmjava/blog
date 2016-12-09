@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE7;IE9"/>
+    <title></title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/supervisor/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/supervisor/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/jquery-2.1.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/datimeday/WdatePicker.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/blog.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/bloggerInfo.js}"></script>
+    <script type="text/javascript" th:src="@{/utf8-jsp/ueditor.config.js}" charset="UTF-8"></script>
+    <script type="text/javascript" th:src="@{/utf8-jsp/ueditor.all.min.js}" charset="UTF-8"> </script>
+    <link rel="stylesheet" type="text/css" th:href="@{/utf8-jsp/themes/default/css/ueditor.css}"/>
+
+<link type="text/css" rel="stylesheet" th:href="@{/bootstrap-fileinput-4.3.3/css/fileinput.css}" />
+<script type="text/javascript" th:src="@{/bootstrap-fileinput-4.3.3/js/fileinput.js}"></script>
+<script type="text/javascript" th:src="@{/bootstrap-fileinput-4.3.3/js/fileinput/locales/zh.js}"></script>
+</head>
+<body>
+   <script type="text/javascript">
+	     var ue = UE.getEditor("describe");
+	</script>
+	
+    <div id="header" th:include="supervisor/common/header :: supervisor"></div>
+   
+    <div class="clearfix"></div>
+     <div class="content">
+         <div class="container-fluid">
+               <div class="row-fluid">
+                 <div class="span2 span_left">
+                       <div class="text-center" style="margin-top: 20px;">
+                           <ul class="nav nav-pills nav-stacked">
+                               <li  class="active">
+                                   <a href="#" class="btn btn-primary active" data-toggle="tab">修改博主信息</a>
+                               </li>
+                               <li>
+                                   <a href="#blogMgt" class="btn btn-primary active" data-toggle="tab">修改密码</a>
+                               </li>
+                           </ul>
+                       </div>
+                 </div>
+         <div class="clearfix"></div>
+    <div class="span10 pull_width">
+         <div class="tab-content">
+	           <!---修改博客模态框 begin-->
+	           <div  class="tab-pane active" id="blogMgt">
+                       <div class="text-center">
+                           <h3>信息修改</h3>
+                       </div>
+                       <div class="media-body">
+                           <form class="form-horizontal" action="/supervisor/updateBloggerInfo" method="post" id="updateBloggerForm">
+                               <input type="hidden" name="id" th:value="${blogger.id}"/>
+                               <div class="control-group">
+                                   <label class="control-label" for="name">姓名：</label>
+                                       <div class="controls">
+                                            <input type="text" name="name" id="name" th:value="${blogger.name}"/>
+                                       </div>
+                               </div>
+                               <div class="control-group">
+                                   <label class="control-label" for="userName">登录名：</label>
+                                       <div class="controls">
+                                          <input type="text" id="userName" name="userName" th:value="${blogger.userName}"/>
+                                       </div>
+                               </div>
+                               
+                               <div class="control-group">
+                                   <label class="control-label" for="motto">座右铭：</label>
+                                       <div class="controls">
+                                          <input type="text" id="motto" name="motto" th:value="${blogger.motto}"/>
+                                       </div>
+                               </div>
+                               
+                               <div class="control-group">
+                                   <label class="control-label" for="readCount">邮箱：</label>
+                                       <div class="controls">
+                                          <input type="text" id="email" name="email" th:value="${blogger.email}"/>
+                                       </div>
+                               </div>
+                               
+                               <div class="control-group">
+                                     <label class="control-label" for="describe">简介：</label>
+                                         <div class="controls">
+                                           <textarea rows="15" cols="10" id="describe" th:utext="${blogger.describe}" name="describe" style="width：100%"></textarea>
+                                         </div>
+                               </div>
+                               <div class="control-group text-center">
+                                    <a href="javascript:;" onclick="updateBloggerInfo();" role="button" class="btn btn-info">确认修改</a>
+                                     <a href="javascript:;" role="button" onclick="javascript:window.history.back();" class="btn btn-info">取消修改</a>
+                               </div>
+                           </form>
+                       </div>
+                   </div>
+                 </div>
+               </div>
+            </div>
+         </div>
+     </div>
+    <div class="footer login">
+        <div class="logon_footer">java</div>
+    </div>
+</body>
+</html>

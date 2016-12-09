@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+  <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<link rel="stylesheet" th:href="@{/bootstrap3/css/bootstrap.min.css}"/>
+	<link rel="stylesheet" th:href="@{/bootstrap3/css/bootstrap-theme.min.css}"/>
+	<link rel="stylesheet" th:href="@{/css/blog.css}"/>
+	<script th:src="@{/bootstrap3/js/jquery-1.11.2.min.js}"></script>
+	<script th:src="@{/bootstrap3/js/bootstrap.min.js}"></script>
+	<title>源码下载</title>
+	<link rel="icon" th:href="@{./images/apple-touch-icon.png}" type="image/x-icon" />
+	<style type="text/css">
+	  .summary font{
+	     font-size:18px;
+	  }
+	</style>
+</head>
+<body>
+<div class="container">
+    <!-- 头部  -->
+	<div id="header" th:include="common/header :: copy"></div>
+	
+	<div class="row">
+	  <div class="col-md-9">
+	  	<div class="data_list">
+	  		<div class="data_list_title">
+			<img th:src="@{/images/list_icon.png}"/>本站源码下载</div>
+	  		
+	  		<div class="datas">
+			    <span class="summary">
+					<font>本站源码使用J2EE开发；</font><br/><br/>
+					<font>使用Springboot+Mybatis3架构，</font><br/><br/>
+					<font>采用Mysql数据库；</font><br/><br/>
+					<font>使用Maven3管理项目，支持restful风格；</font><br/><br/>
+					<font>前后台网页使用主流的Bootstrap3 UI框架与 thymeleaf模板引擎；</font><br/><br/>
+					<font>数据库连接池使用的是jdbc；</font><br/><br/>
+					<font>在线编辑器使用了百度的UEditor，支持单图，多图上传，支持截图上传等；</font><br/><br/>
+					<font>V1.0 2016年10月1号发布</font>
+				</span>
+	  		</div>
+	  	</div>
+	  </div>
+	  
+	    <!-- 右边  -->
+		<div id="right" th:include="common/right :: righter"></div>
+		
+		</div>
+		
+		<!-- 底部 -->
+		<div id="foot" th:include="common/footer :: foot"></div>
+	</div>
+	<form action="/blog" accept-charset="UTF-8" method="GET"  id="homeForm">
+		<input type="hidden" name="typeId" id="typeId" th:value="${typeId}"/>
+		<input type="hidden" name="searchDate" id="searchDate" th:value="${searchDate}"/>
+		<input type="hidden" name="currPage" id="currPage" th:value="${currPage}" />
+    </form>
+    
+	<script type="text/javascript" th:inline="javascript">
+	    var currPage=[[${currPage}]];
+	</script> 
+	<script th:src="@{/javascript/home.js}"></script>
+	<script th:src="@{/javascript/blogInfo.js}"></script>
+  </body>
+</html>

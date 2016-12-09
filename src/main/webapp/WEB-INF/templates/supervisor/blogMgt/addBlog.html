@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" 
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE7;IE9"/>
+    <title>添加博客</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/supervisor/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/supervisor/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/jquery-2.1.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/datimeday/WdatePicker.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/blog.js}"></script>
+    <script type="text/javascript" th:src="@{/utf8-jsp/ueditor.config.js}" charset="UTF-8"></script>
+    <script type="text/javascript" th:src="@{/utf8-jsp/ueditor.all.min.js}" charset="UTF-8"> </script>
+    <link rel="stylesheet" type="text/css" th:href="@{/utf8-jsp/themes/default/css/ueditor.css}"/>
+</head>
+<body>
+   <script type="text/javascript">
+	     var ue = UE.getEditor("content");
+	</script>
+	<!-- 头部 -->
+   <div id="header" th:include="supervisor/common/header :: supervisor"></div>
+   
+    <div class="clearfix"></div>
+     <div class="content">
+         <div class="container-fluid">
+               <div class="row-fluid">
+                 <div class="span2 span_left">
+                       <div class="text-center" style="margin-top: 20px;">
+                           <ul class="nav nav-pills nav-stacked">
+                               <li class="active">
+                                   <a href="#">添加博客</a>
+                               </li>
+                               <li >
+                                   <a th:href="@{/supervisor/index.html}" class="btn btn-primary active" >博客管理</a>
+                               </li>
+                               <li>
+                                   <a th:href="@{/supervisor/typeMgt}" class="btn btn-primary active" >类别管理</a>
+                               </li>
+                           </ul>
+                       </div>
+                 </div>
+         <div class="clearfix"></div>
+    <div class="span10 pull_width">
+         <div class="tab-content">
+             <!--博客管理-->
+             
+	           <!---发布博客模态框 begin-->
+                       <div class="text-center">
+                           <h3>发布博客</h3>
+                       </div>
+                       <div class="media-body">
+                           <form class="form-horizontal" action="/supervisor/submit-blog" method="post" id="submitBlogForm">
+                               <div class="control-group">
+                                   <label class="control-label" for="title">博客标题：</label>
+                                       <div class="controls">
+                                            <input type="text" name="title" id="title"/>
+                                       </div>
+                               </div>
+                               <div class="control-group">
+                                   <label class="control-label" for="publish_time">发布日期：</label>
+                                       <div class="controls">
+                                           <input type="text" class="Wdate" name="publish_time" id="publish_time" onclick="WdatePicker()"/>
+                                       </div>
+                               </div>
+                               <div class="control-group">
+                                   <label class="control-label" for="author">作者：</label>
+                                       <div class="controls">
+                                          <input type="text" id="author" name="author"/>
+                                       </div>
+                               </div>
+                               <div class="control-group">
+                                   <label class="control-label" for="blogType">博客类别：</label>
+                                       <div class="controls">
+                                           <select id="blogType" name="blogType" >
+						                        <option th:each="type,typeStat:${types}" th:value="${type.id}" th:text="${type.name}"></option>
+						                   </select>
+                                       </div>
+                               </div>
+                               <div class="control-group">
+                                    <label class="control-label" for="keyword">关键词：</label>
+                                         <div class="controls">
+                                            <input type="text" id="keyword" name="keyword"/>
+                                         </div>
+                               </div>
+                               
+                               <div class="control-group">
+                                    <label class="control-label" for="isUse">是否显示：</label>
+                                         <div class="controls">
+                                            <select id="isUse" name="isUse" >
+						                        <option value="1">显示</option>
+						                        <option value="0">隐藏</option>
+						                   </select>
+                                         </div>
+                               </div>
+                               <div class="control-group">
+                                     <label class="control-label" for="container">正文内容：</label>
+                                         <div class="controls">
+                                           <textarea rows="15" cols="10" id="content" name="content" style="width：100%"></textarea>
+                                         </div>
+                               </div>
+                               <div class="control-group text-center">
+                                    <a href="javascript:;" onclick="submitForm();" role="button" class="btn btn-info">发布博客</a>
+                                     <a href="#" role="button" class="btn btn-info">我再想想</a>
+                               </div>
+                           </form>
+                       </div>
+                       
+                 </div>
+               </div>
+            </div>
+         </div>
+     </div>
+    <div class="footer login">
+        <div class="logon_footer">java</div>
+    </div>
+</body>
+</html>

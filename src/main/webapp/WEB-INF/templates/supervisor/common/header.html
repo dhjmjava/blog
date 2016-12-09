@@ -1,0 +1,39 @@
+ <div id ="header" th:fragment="supervisor">
+ <div class="header login" >
+         <div class="login_header">个人博客管理系统</div>
+         <div class="currIngo">欢迎您:
+         <span th:text="${userName}"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+         <span ><a href="loginOut">退出登录</a></span>&nbsp;&nbsp;
+         <span id="date"></span>
+         </div>
+    </div>
+    <div class="acontent">
+        <ul class="nav nav-pills list" id="tabbar">
+            <li  th:if="${selected == 1}" th:attr="class='active'">
+                <a href="index.html">博客管理</a>
+            </li>
+            <li  th:if="${selected != 1}">
+                <a href="index.html">博客管理</a>
+            </li>
+            <li  th:if="${selected == 2}" th:attr="class='active'">
+                <a href="commentMgt.html">评论管理</a>
+            </li>
+            <li  th:if="${selected != 2}">
+                <a href="commentMgt.html">评论管理</a>
+            </li>
+            <li  th:if="${selected == 3}" th:attr="class='active'">
+                <a href="linkMgt.html">链接管理</a>
+            </li>
+            <li  th:if="${selected != 3}">
+                <a href="linkMgt.html">链接管理</a>
+            </li>
+            <li  th:if="${selected == 4}" th:attr="class='active'">
+                <a href="systemMgt.html">系统管理</a>
+            </li>
+            <li  th:if="${selected != 4}">
+                <a href="systemMgt.html">系统管理</a>
+            </li>
+        </ul>
+    </div>
+ </div>
+ 

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE7;IE9"/>
+    <title></title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/supervisor/index.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/supervisor/bootstrap.min.css}"/>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/jquery-2.1.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/datimeday/WdatePicker.js}"></script>
+    <script type="text/javascript" th:src="@{/javascript/supervisor/blog.js}"></script>
+    <script type="text/javascript" th:src="@{/utf8-jsp/ueditor.config.js}" charset="UTF-8"></script>
+    <script type="text/javascript" th:src="@{/utf8-jsp/ueditor.all.min.js}" charset="UTF-8"> </script>
+    <link rel="stylesheet" type="text/css" th:href="@{/utf8-jsp/themes/default/css/ueditor.css}"/>
+</head>
+<body>
+   <script type="text/javascript">
+	     var ue = UE.getEditor("content");
+	</script>
+	
+    <div id="header" th:include="supervisor/common/header :: supervisor"></div>
+   
+    <div class="clearfix"></div>
+     <div class="content">
+         <div class="container-fluid">
+               <div class="row-fluid">
+                 <div class="span2 span_left">
+                       <div class="text-center" style="margin-top: 20px;">
+                           <ul class="nav nav-pills nav-stacked">
+                               <li >
+                                   <a th:href="@{/supervisor/addBlog}" class="btn btn-primary active">添加博客</a>
+                               </li>
+                               <li class="active">
+                                   <a th:href="@{/supervisor/index.html}" class="btn btn-primary active">博客管理</a>
+                               </li>
+                               <li>
+                                   <a th:href="@{/supervisor/typeMgt}" class="btn btn-primary active">类别管理</a>
+                               </li>
+                           </ul>
+                       </div>
+                 </div>
+         <div class="clearfix"></div>
+    <div class="span10 pull_width">
+         <div class="tab-content">
+	           <!---修改博客模态框 begin-->
+	           <div  class="tab-pane active" id="blogMgt">
+                       <div class="text-center">
+                           <h3>修改博客</h3>
+                       </div>
+                       <div class="media-body">
+                           <form class="form-horizontal" action="/blog/supervisor/submitupdate" method="post" id="updateBlogForm">
+                               <input type="hidden" name="id" th:value="${blog.id}"/>
+                               <div class="control-group">
+                                   <label class="control-label" for="title">博客标题：</label>
+                                       <div class="controls">
+                                            <input type="text" name="title" id="title" th:value="${blog.title}"/>
+                                       </div>
+                               </div>
+                               <div class="control-group">
+                                   <label class="control-label" for="publish_time">发布日期：</label>
+                                       <div class="controls">
+                                           <input type="text" class="Wdate" name="publish_time" th:value="${#calendars.format(blog.publish_time,'yyyy-MM-dd')}" id="publish_time" onclick="WdatePicker()"/>
+                                       </div>
+                               </div>
+                               <div class="control-group">
+                                   <label class="control-label" for="author">作者：</label>
+                                       <div class="controls">
+                                          <input type="text" id="author" name="author" th:value="${blog.author}"/>
+                                       </div>
+                               </div>
+                               <div class="control-group">
+                                   <label class="control-label" for="read_count">阅读量：</label>
+                                       <div class="controls">
+                                          <input type="text" id="read_count" name="read_count" th:value="${blog.read_count}"/>
+                                       </div>
+                               </div>
+                               <div class="control-group">
+                                   <label class="control-label" for="blogType">博客类别：</label>
+                                       <div class="controls">
+                                           <select id="blogType" name="blogType">
+						                        <option th:each="type:${types}" selected="selected" th:if="${type.id == blog.blog_type}" th:value="${type.id}" th:text="${type.name}"></option>
+						                        <option th:each="type:${types}" th:if="${blog.blog_type != type.id}" th:value="${type.id}" th:text="${type.name}"></option>
+						                   </select>
+                                       </div>
+                               </div>
+                               <div class="control-group"> 
+                                    <label class="control-label" for="keyword">关键词：</label>
+                                         <div class="controls">
+                                            <input type="text" id="keyword" name="keyword" th:value="${blog.keyword}"/>
+                                         </div>
+                               </div>
+                               
+                               <div class="control-group">
+                                    <label class="control-label" for="isUse">是否显示：</label>
+                                         <div class="controls">
+                                            <select id="isUse" name="isUse" th:switch="${blog.is_use}">
+						                        <option value="1" th:case="1" th:selected="selected">显示</option>
+						                        <option value="0" th:case="0" th:selected="selected">隐藏</option>
+						                   </select>
+                                         </div>
+                               </div>
+                               <div class="control-group">
+                                     <label class="control-label" for="container">正文内容：</label>
+                                         <div class="controls">
+                                           <textarea rows="15" cols="10" id="content" name="content" style="width：100%" th:utext="${blog.content}"></textarea>
+                                         </div>
+                               </div>
+                               <div class="control-group text-center">
+                                    <a href="javascript:;" onclick="updateBlog();" role="button" class="btn btn-info">确认修改</a>
+                                     <a href="javascript:;" role="button" onclick="javascript:window.history.back();" class="btn btn-info">取消修改</a>
+                               </div>
+                           </form>
+                       </div>
+                   </div>
+                 </div>
+               </div>
+            </div>
+         </div>
+     </div>
+    <div class="footer login">
+        <div class="logon_footer">java</div>
+    </div>
+</body>
+</html>
