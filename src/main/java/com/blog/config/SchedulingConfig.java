@@ -28,7 +28,7 @@ public class SchedulingConfig {
 	
 	//@Scheduled(cron = "0/20 * * * * ?") // 每20秒执行一次
 	public void test(){
-		System.out.println("定时任务开始执行！");
+		System.out.println("定时任务！");
 	}
 
 }
