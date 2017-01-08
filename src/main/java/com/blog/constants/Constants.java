@@ -32,6 +32,9 @@ public class Constants {
 	public static final int EIGHT = 8;
 	public static final int NINE = 9;
 	public static final int TEN = 10;
+	
+	//索引文件位置
+	public static final String INDEXDIR="/lucene/index";
    
 }
   

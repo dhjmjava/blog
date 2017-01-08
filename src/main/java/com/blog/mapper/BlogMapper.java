@@ -24,6 +24,8 @@ import com.blog.entity.Blog;
  * @see        
  */
 public interface BlogMapper{
+	public List<Blog> getAll();
+	
 	public List<Blog> getAllBlog(@Param("params") Map<String, Integer> map);
 	
 	//分页查询

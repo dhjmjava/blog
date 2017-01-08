@@ -45,5 +45,7 @@ public interface BlogService {
 	
 	public List<Blog> getBlogByComm();
 	
+	public List<Blog> getAll();
+	
 }
   

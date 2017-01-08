@@ -10,6 +10,8 @@
 package com.blog.interceptor;  
 
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -17,31 +19,37 @@ import org.apache.log4j.Logger;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.blog.util.HtmlEncode;
+
 /**  
  * ClassName:SecurityInterceptor <br/>  
- * Function: 登录检查. <br/>  
+ * Function: 后台登陆拦截. <br/>  
  * Date:     2016-8-12 上午11:33:13 <br/>  
  * @author   Administrator  
  * @version    
  * @since    JDK 1.6  
  * @see        
  */
-public class LoginSecurityInterceptor implements HandlerInterceptor{
-    Logger logger = Logger.getLogger(LoginSecurityInterceptor.class);
+public class URLInterceptor implements HandlerInterceptor{
+    Logger logger = Logger.getLogger(URLInterceptor.class);
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String uri = request.getRequestURI();
-        if(uri.equals("/blog/loginSuccess")){
-        	// 验证用户是否登陆
-    		Object obj = request.getSession().getAttribute("userName");
-    		if (obj == null) {
-    			response.sendRedirect(request.getContextPath() + "/login.html");
-    			return false;
-    		}
+        //获取所有请求参数
+		Map<String,String[]> params = request.getParameterMap();
+        for (Map.Entry<String, String[]> entry : params.entrySet()) {
+        	String[] value = entry.getValue();
+        	if (value != null) {
+	        	int strLength = value.length;
+	        	for (int i = 0; i < strLength; i++) {
+	        		boolean result = HtmlEncode.stripXSS(value[i]);
+		        	if(result){
+		        		response.sendRedirect(request.getContextPath() + "/");
+		        		return false;
+		        	}
+	        	}
+	        }
         }
-        
-		return true;
-		
+        return true;
 	}
 
 	@Override

@@ -27,10 +27,11 @@ public class MyWebAppConfigurer  extends WebMvcConfigurerAdapter{
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		 
+		//注册拦截器 
+		registry.addInterceptor(new URLInterceptor()).addPathPatterns("/**");
 		registry.addInterceptor(new LoginSecurityInterceptor()).addPathPatterns("/**");
-		//registry.addInterceptor(new ErrorInterceptor()).addPathPatterns("/**");
 		super.addInterceptors(registry);
+	
 	}
 
 	

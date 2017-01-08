@@ -46,7 +46,24 @@ public class HtmlEncode {
             result = result.replaceAll("'", "\"");  
             return (result.toString());  
         }  
-    }    
+    }      
+        public static void main(String[] args) { 
+            System.out.println(HtmlEncode.htmlEncode("<script>alert(\"123\");</script>  ")); 
+            System.out.println(HtmlEncode.htmlDecode("<script>alert('123');</script>&nbsp;&nbsp;")); 
+        }
+     
+    //敏感词过滤
+    public static boolean filterWord(String content){
+    	boolean flag = false;
+    	SensitivewordFilter filter = new SensitivewordFilter();
+    	Set<String> set = filter.getSensitiveWord(content, 1);
+    	
+    	if(set.size()>0){
+    		flag = true;
+    	}
+    	
+    	return flag;
+    }
     
     private static String reg = "(?:')|(?:--)|(/\\*(?:.|[\\n\\r])*?\\*/)|"  
             + "(\\b(select|update|and|or|delete|insert|trancate|char|into|substr|ascii|declare|exec|count|master|into|drop|execute|UNION|EXISTS)\\b)";  
@@ -58,18 +75,85 @@ public class HtmlEncode {
     if (sqlPattern.matcher(str).find()) {  
            return true; 
        }  
+    
          return false; 
+         
      }  
-
-    //敏感词过滤
-    public static boolean filterWord(String content){
-    	boolean flag = false;
-    	SensitivewordFilter filter = new SensitivewordFilter();
-    	Set<String> set = filter.getSensitiveWord(content, 1);
-    	if(set.size()>0){
-    		flag = true;
-    	}
-    	return flag;
-    }
+    
+    /**
+     * 如果找到非法字符则返回true,如果没找到则返回false
+    *
+     * @param value
+     * @return
+    */
+    public static boolean stripXSS(String value) {
+	    boolean result = false;
+	    if (value != null) {
+		    value = value.replaceAll("","");
+		    // Avoid anything between script tags
+		    Pattern scriptPattern = Pattern.compile("<script>(.*?)</script>",Pattern.CASE_INSENSITIVE);
+		    result = scriptPattern.matcher(value).find();
+		    // //如果找到则为true
+	    if (result)
+	    return result;
+	
+	    // Avoid anything in a src='...' type of expression
+	    scriptPattern = Pattern.compile("src[rn]*=[rn]*\'(.*?)\'",Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
+	    result = scriptPattern.matcher(value).find();
+	    if (result)
+	    return result;
+	
+	    scriptPattern = Pattern.compile("src[rn]*=[rn]*\"(.*?)\"",
+	    Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
+	    result = scriptPattern.matcher(value).find();
+	    if (result)
+	    return result;
+	
+	    // Remove any lonesome </script> tag
+	    scriptPattern = Pattern.compile("</script>",Pattern.CASE_INSENSITIVE);
+	    result = scriptPattern.matcher(value).find();
+	    if (result)
+	    return result;
+	
+	    // Remove any lonesome <script ...> tag
+	    scriptPattern = Pattern.compile("<script(.*?)>",
+	    Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
+	    result = scriptPattern.matcher(value).find();
+	    if (result)
+	    return result;
+	
+	    // Avoid eval(...) expressions
+	    scriptPattern = Pattern.compile("eval\\((.*?)\\)",Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
+	    result = scriptPattern.matcher(value).find();
+	    if (result)
+	    return result;
+	
+	    // Avoid expression(...) expressions
+	    scriptPattern = Pattern.compile("expression\\((.*?)\\)",Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
+	    result = scriptPattern.matcher(value).find();
+	    if (result)
+	    return result;
+	
+	    scriptPattern = Pattern.compile("vbscript:",Pattern.CASE_INSENSITIVE);
+	    result = scriptPattern.matcher(value).find();
+	    if (result)
+	    return result;
+	
+	    // Avoid onload= expressions
+	    scriptPattern = Pattern.compile("onload(.*?)=",Pattern.CASE_INSENSITIVE | Pattern.MULTILINE| Pattern.DOTALL);
+	    result = scriptPattern.matcher(value).find();
+	    if (result)
+	    return result;
+	
+	    // Avoid alert:... expressions
+	    scriptPattern = Pattern.compile("alert", Pattern.CASE_INSENSITIVE);
+	    result = scriptPattern.matcher(value).find();
+	    if (result)
+	    return result;
+	    
+	    }
+	    return result;
+	 }
+    
 }
   
