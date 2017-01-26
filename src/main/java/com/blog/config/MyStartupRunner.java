@@ -35,7 +35,7 @@ import com.blog.service.impl.BlogServiceImpl;
 public class MyStartupRunner extends BaseService implements CommandLineRunner{
 
 	/*
-	 * 系統啟動初始化索引（可选）.  
+	 * 系统启动初始化索引（可选）.  
 	 * @see org.springframework.boot.CommandLineRunner#run(java.lang.String[])
 	 */
 	@Override
