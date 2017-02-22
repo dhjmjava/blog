@@ -45,7 +45,7 @@
 		    <li id="pageDown"><a href="javascript:;" id="pageDown" onclick="pageDown();">下一页</a></li>
 		    <li><a href='javascript:;' onclick="pageEnd()">尾页</a></li>
 		  </ul>
-		    <div style="margin-left: 300px;margin-top: -45px;">共<span id="totalCount"></span>篇</div>
+		    <!-- <div style="margin-left: 300px;margin-top: -45px;">共<span id="totalCount"></span>篇</div> -->
 		</nav>
 	 </div>
 	  	
@@ -63,15 +63,13 @@
 	
 	<form action="/blog" accept-charset="UTF-8" method="GET"  id="homeForm">
 		<input type="hidden" name="typeId" id="typeId" th:value="${typeId}"/>
-		<input type="hidden" name="searchDate" id="searchDate" th:value="${searchDate}"/>
-		<input type="hidden" name="currPage" id="currPage" th:value="${page.currPage}" />
-		<input type="hidden" name="pageSize" id="pageSize" th:value="${page.pageSize}" />
+		<input type="hidden" name="searchDate" id="searchDate"/>
+		<input type="hidden" name="currPage" id="currPage"/>
+		<input type="hidden" name="pageSize" id="pageSize" value="10" />
     </form>
 	
 	
 	<script type="text/javascript" th:inline="javascript">
-	    var currPage=[[${page.currPage}]];
-		var totalCount=[[${page.totalCount}]];
 		var pageNumber = [[${page.pageNumber.size()}]];
 	</script> 
 	<script th:src="@{/javascript/home.js}"></script>

@@ -9,20 +9,24 @@
   
 package com.blog.controller.front;  
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.log4j.Logger;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSON;
 import com.blog.constants.Constants;
 import com.blog.controller.BaseController;
 import com.blog.entity.Blog;
@@ -61,11 +65,6 @@ public class HomeController extends BaseController{
     	long typeId = Convert.strToLong(request.getParameter("typeId"), -1);
     	String searchDate = request.getParameter("searchDate");
     	
-    	Blogger blogger=bloggerServiceImpl.getBloggerInfoById(1);
-    	List<Link> links = linkServiceImpl.getLinkList();
-    	List<Blog> blogDate = blogServiceImpl.getBlogDate();
-    	List<Blog> typeBlogs = blogServiceImpl.getBlogType();
-    	
     	Page<Blog> page = null;
     	try {
     		page = blogServiceImpl.getBlogPage(currPage,pageSize,typeId,searchDate);
@@ -73,95 +72,33 @@ public class HomeController extends BaseController{
 			e.printStackTrace();
 		}
     	
-    	model.addAttribute("typeBlogs", typeBlogs);
-    	model.addAttribute("blogger", blogger);
-    	model.addAttribute("links", links);
     	model.addAttribute("page", page);
-    	model.addAttribute("blogDate", blogDate);
-    	model.addAttribute("typeId", typeId);
-    	model.addAttribute("searchDate", searchDate==null?"":searchDate);
         return "home";
     }
     
     //文章详情
     @RequestMapping("article-{bi}.html")
-    public String blogInfo(@PathVariable("bi") long bi,Model model,HttpServletRequest request){
+    public String blogInfo(@PathVariable("bi") long bi,Model model){
     	
-    	int currPage = Convert.strToInt(request.getParameter("currPage"), 1);
-    	long typeId = Convert.strToLong(request.getParameter("typeId"), -1);
-    	String searchDate = request.getParameter("searchDate");
-    	
-    	Blogger blogger=bloggerServiceImpl.getBloggerInfoById(1);
-    	List<Link> links = linkServiceImpl.getLinkList();
-    	List<Blog> blogDate = blogServiceImpl.getBlogDate();
-    	List<Blog> typeBlogs = blogServiceImpl.getBlogType();
     	Blog blog = blogServiceImpl.getBlogById(bi);
-    	
     	List<BlogComments> comments = blogCommentsServiceImpl.queryCommentsByBid(bi);
-    	Page<Blog> page = null;
-    	
-    	try {
-    		page = blogServiceImpl.getBlogPage(currPage,Constants.TEN,typeId,searchDate);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
     	
     	model.addAttribute("blog",blog);
-    	model.addAttribute("typeBlogs", typeBlogs);
-    	model.addAttribute("blogger", blogger);
-    	model.addAttribute("links", links);
-    	model.addAttribute("blogDate", blogDate);
-    	model.addAttribute("typeId", typeId);
-    	model.addAttribute("searchDate", searchDate==null?"":searchDate);
-    	model.addAttribute("currPage",currPage);
-    	model.addAttribute("page", page);
     	model.addAttribute("comments", comments);
     	return "front/blogInfo";
     }
     
     //关于博主
-    @RequestMapping("aboutMe.html")
-    public String aboutMe(Model model,HttpServletRequest request){
-    	
-    	int currPage = Convert.strToInt(request.getParameter("currPage"), 1);
-    	long typeId = Convert.strToLong(request.getParameter("typeId"), -1);
-    	String searchDate = request.getParameter("searchDate");
-    	
+    @RequestMapping(value="aboutMe.html",method=RequestMethod.GET)
+    public String aboutMe(Model model){
     	Blogger blogger=bloggerServiceImpl.getBloggerInfoById(1);
-    	List<Link> links = linkServiceImpl.getLinkList();
-    	List<Blog> blogDate = blogServiceImpl.getBlogDate();
-    	List<Blog> typeBlogs = blogServiceImpl.getBlogType();
-    	
-    	model.addAttribute("typeBlogs", typeBlogs);
     	model.addAttribute("blogger", blogger);
-    	model.addAttribute("links", links);
-    	model.addAttribute("blogDate", blogDate);
-    	model.addAttribute("typeId", typeId);
-    	model.addAttribute("searchDate", searchDate==null?"":searchDate);
-    	model.addAttribute("currPage",currPage);
         return "front/bloggerInfo";
     }
     
     //下载页面
-    @RequestMapping("download.html")
+    @RequestMapping(value="download.html",method=RequestMethod.GET)
     public String download(Model model,HttpServletRequest request){
-    	
-    	int currPage = Convert.strToInt(request.getParameter("currPage"), 1);
-    	long typeId = Convert.strToLong(request.getParameter("typeId"), -1);
-    	String searchDate = request.getParameter("searchDate");
-    	
-    	Blogger blogger=bloggerServiceImpl.getBloggerInfoById(1);
-    	List<Link> links = linkServiceImpl.getLinkList();
-    	List<Blog> blogDate = blogServiceImpl.getBlogDate();
-    	List<Blog> typeBlogs = blogServiceImpl.getBlogType();
-    	
-    	model.addAttribute("typeBlogs", typeBlogs);
-    	model.addAttribute("blogger", blogger);
-    	model.addAttribute("links", links);
-    	model.addAttribute("blogDate", blogDate);
-    	model.addAttribute("typeId", typeId);
-    	model.addAttribute("searchDate", searchDate==null?"":searchDate);
-    	model.addAttribute("currPage",currPage);
         return "front/download";
     }
     
@@ -172,7 +109,7 @@ public class HomeController extends BaseController{
      * @return  
      * @since JDK 1.7
      */
-    @RequestMapping("submit-comment")
+    @RequestMapping(value="submit-comment",method=RequestMethod.POST)
     @ResponseBody
     public ErrorInfo submitComment(HttpServletRequest request){
     	ErrorInfo error = new ErrorInfo();
@@ -197,8 +134,18 @@ public class HomeController extends BaseController{
     	return error;
     }
     
-    
-    @RequestMapping("search")
+    /**
+     * 
+     * search:(搜索页面). <br/>   
+     *  
+     * @author daihui  
+     * @param q
+     * @param model
+     * @param request
+     * @return  
+     * @since JDK 1.7
+     */
+    @RequestMapping(value="search",method=RequestMethod.GET)
     public String search(String q,Model model,HttpServletRequest request){
     	int currPage = Convert.strToInt(request.getParameter("currPage"), 1);
     	int pageSize = Constants.TEN;
@@ -220,6 +167,37 @@ public class HomeController extends BaseController{
 	    
 	    return "front/search";
     }
+    
+    /**
+	 * 
+	 * common:(公共页面数据). <br/>   
+	 *  
+	 * @author Administrator  
+	 * @return  
+	 * @since JDK 1.7
+	 */
+	@RequestMapping(value= "/common",  method = RequestMethod.GET)
+	@ResponseBody
+	public String common(HttpServletRequest request){
+		int currPage = Convert.strToInt(request.getParameter("currPage"), 1);
+    	long typeId = Convert.strToLong(request.getParameter("typeId"), -1);
+    	String searchDate = request.getParameter("searchDate");
+		
+    	List<Link> links = linkServiceImpl.getLinkList();
+    	List<Blog> blogDate = blogServiceImpl.getBlogDate();
+    	List<Blog> typeBlogs = blogServiceImpl.getBlogType();
+    	Map<String, Object> map = new HashMap<String, Object>();
+    	Blogger blogger=bloggerServiceImpl.getBloggerInfoById(1);
+    	map.put("blogger", blogger);
+    	map.put("links", links);
+    	map.put("blogDate", blogDate);
+    	map.put("typeBlogs", typeBlogs);
+    	map.put("currPage", currPage);
+    	map.put("typeId", typeId);
+    	map.put("searchDate", searchDate);
+    	String json = JSON.toJSONString(map); 
+    	return json;
+	}
     
 }
   

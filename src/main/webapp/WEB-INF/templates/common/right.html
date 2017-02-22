@@ -8,8 +8,8 @@
 				<div class="user_image">
 					<img th:src="@{/images/bqb.jpg}"/>
 				</div>
-				<div class="nickName" th:text="${blogger?.userName}"></div>
-				<div class="userSign" th:text="${blogger?.motto}"></div>
+				<div class="nickName" id="nickName"></div>
+				<div class="userSign" id="userSign"></div>
 			</div>
 	  	
 	  		<div class="data_list">
@@ -18,10 +18,7 @@
 					按日志类别
 				</div>
 				<div class="datas">
-					<ul>
-						<li th:each="type,typeStat:${typeBlogs}">
-						    <span><a href="javascript:;" onclick="typeSearch(this)" th:attr="tid=${type.blog_type}" th:text="${type.name}">类别</a>&nbsp; (<span th:text="${type.typeCount}"></span>)</span>
-						</li>
+					<ul id="types">
 					</ul>
 				</div>
 			</div>
@@ -32,10 +29,7 @@
 					按日志日期
 				</div>
 				<div class="datas">
-					<ul>
-						<li th:each="date:${blogDate}">
-						  <span><a href="javascript:;" onclick="dateSearch(this)" th:attr="month=${date.months}" th:text="${date.months}">日期</a>&nbsp;(<span th:text="${date.blogCount}"></span>)</span>
-						</li>
+					<ul id="dates">
 					</ul>
 				</div>
 			</div>
@@ -46,12 +40,7 @@
 					友情链接
 				</div>
 				<div class="datas">
-					<ul>
-						<li th:each="link:${links}">
-						  <span>
-						    <a th:href="${link.url}" target="_blank" th:text="${link.name}">友情链接</a>
-						  </span>
-						</li>
+					<ul id="links">
 					</ul>
 				</div>
 			</div>
@@ -63,12 +52,12 @@
 				</div>
 				<div class="datas">
 					<ul>
-							<li><span>1.提供bug、建议的。</span></li>
-							<li><span>2.单身的漂亮妹子想找靠谱对象的。</span></li>
-							<li><span>3.要友情链接的。</span></li>
-							<li><span>4.要给我发红包的</span></li>
+						<li><span>1.提供bug、建议的。</span></li>
+						<li><span>2.单身的漂亮妹子想找靠谱对象的。</span></li>
+						<li><span>3.要友情链接的。</span></li>
+						<li><span>4.要给我发红包的</span></li>
 					</ul>
 				</div>
 			</div>
 		  </div>
-</div>
+      </div>
